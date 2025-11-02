@@ -28,16 +28,30 @@ public sealed class MarkerSystem : EntitySystem
 
     private void OnStartup(EntityUid uid, MarkerComponent marker, ComponentStartup args)
     {
-        UpdateVisibility(uid);
+        UpdateVisibility((uid, marker));
     }
 
-    private void UpdateVisibility(EntityUid uid)
+    // ES START
+    // if layers are set, only toggle layers instead of the entire sprite
+    private void UpdateVisibility(Entity<MarkerComponent> uid)
     {
-        if (TryComp(uid, out SpriteComponent? sprite))
+        if (!TryComp(uid, out SpriteComponent? sprite))
+            return;
+
+
+        if (uid.Comp.Layers is null)
         {
             _sprite.SetVisible((uid, sprite), MarkersVisible);
         }
+        else
+        {
+            foreach (var layer in uid.Comp.Layers)
+            {
+                _sprite.LayerSetVisible((uid, sprite), layer, MarkersVisible);
+            }
+        }
     }
+    // ES END
 
     private void UpdateMarkers()
     {
@@ -45,7 +59,9 @@ public sealed class MarkerSystem : EntitySystem
 
         while (query.MoveNext(out var uid, out var comp))
         {
-            UpdateVisibility(uid);
+            // ES START
+            UpdateVisibility((uid, comp));
+            // ES END
         }
     }
 }

@@ -7,6 +7,9 @@
     - type: Sprite
       sprite: Structures/Wallmounts/extinguisher_cabinet.rsi
       snapCardinals: true
+      # ES START
+      granularLayersRendering: true
+      # ES END
       layers:
       - state: frame
       - state: extinguisher
@@ -14,6 +17,15 @@
         visible: true
       - state: closed
         map: ["enum.OpenableVisuals.Layer"]
+    # ES START
+      - state: directional
+        sprite: _ES/Markers/spawners.rsi
+        map: ["directional"]
+        renderingStrategy: Default
+        visible: false
+    - type: Marker
+      layers: ["directional"]
+    # ES END
     - type: ItemSlots
       slots:
         ItemCabinet:
