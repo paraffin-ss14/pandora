@@ -5,6 +5,7 @@ using Content.Client.Lobby;
 using Content.Client.RoundEnd;
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
+using Content.Shared.GameTicking.Prototypes;
 using Content.Shared.GameWindow;
 using Content.Shared.Roles;
 using JetBrains.Annotations;
