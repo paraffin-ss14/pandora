@@ -10,11 +10,11 @@ namespace Content.Shared._ES.Masks;
 /// This is a prototype for a Masquerade, a set of roles to give for given player counts.
 /// </summary>
 [Prototype("esMasquerade")]
-public sealed class ESMasqueradePrototype : IPrototype, ISerializationHooks
+public sealed partial class ESMasqueradePrototype : IPrototype, ISerializationHooks
 {
     /// <inheritdoc/>
     [IdDataField]
-    public string ID { get; } = default!;
+    public string ID { get; private set; }  = default!;
 
     /// <summary>
     ///     The name for this masquerade. Can be overwritten by localization.
@@ -103,7 +103,7 @@ public abstract partial class MasqueradeKind
     ///     The default mask used for post-start latejoiners.
     /// </summary>
     [DataField(readOnly: true, required: true)]
-    public MasqueradeEntry DefaultMask { get; set; }
+    public MasqueradeEntry DefaultMask { get; set; } = default!;
 
     internal virtual void Init() {}
 };

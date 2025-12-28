@@ -10,20 +10,20 @@ namespace Content.Shared._ES.Masks.Masquerades;
 /// </summary>
 /// <seealso cref="MasqueradeEntry"/>
 [Prototype("esMaskSet")]
-public sealed class ESMaskSetPrototype : IPrototype, IInheritingPrototype
+public sealed partial class ESMaskSetPrototype : IPrototype, IInheritingPrototype
 {
     /// <inheritdoc/>
     [IdDataField]
-    public string ID { get; } = default!;
+    public string ID { get; private set; }  = default!;
 
     /// <inheritdoc/>
     [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<ESMaskSetPrototype>))]
-    public string[]? Parents { get; }
+    public string[]? Parents { get; private set; }
 
     /// <inheritdoc/>
     [NeverPushInheritance]
     [AbstractDataField]
-    public bool Abstract { get; }
+    public bool Abstract { get; private set; }
 
     public IReadOnlyDictionary<ProtoId<ESMaskPrototype>, float> Masks => _masks;
 
