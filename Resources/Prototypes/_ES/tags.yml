@@ -72,10 +72,3 @@
 
 - type: Tag
   id: ESSuitEVASec
-
-- type: Tag
-  id: ESThrusterEngineGas
-
-- type: Tag
-  id: ESThrusterEngineIon
-

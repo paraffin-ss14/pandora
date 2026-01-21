@@ -63,14 +63,6 @@ public sealed partial class MeleeWeaponSystem
 
             if (meleeWeaponComponent.SwingLeft)
                 angle *= -1;
-
-            // ES START
-            // todo mirror datafield for sprite flipping here (sowrd)
-            if (meleeWeaponComponent.SwapNextSwing)
-                angle *= -1;
-
-            meleeWeaponComponent.SwapNextSwing = !meleeWeaponComponent.SwapNextSwing;
-            // ES END
         }
 
         _sprite.SetRotation((animationUid, sprite), localPos.ToWorldAngle());
@@ -83,16 +75,20 @@ public sealed partial class MeleeWeaponSystem
             case WeaponArcAnimation.Slash:
                 track = EnsureComp<TrackUserComponent>(animationUid);
                 track.User = user;
-                _animation.Play(animationUid, GetSlashAnimation((animationUid, sprite), angle, spriteRotation, length, offset), SlashAnimationKey);
+// ES START
+                _animation.Play(animationUid, GetSlashAnimation((animationUid, sprite), angle, spriteRotation), SlashAnimationKey);
                 if (arcComponent.Fadeout)
                     _animation.Play(animationUid, GetFadeAnimation(sprite, 0.15f, 0.25f), FadeAnimationKey);
+// ES END
                 break;
             case WeaponArcAnimation.Thrust:
                 track = EnsureComp<TrackUserComponent>(animationUid);
                 track.User = user;
-                _animation.Play(animationUid, GetThrustAnimation((animationUid, sprite), offset, spriteRotation, length), ThrustAnimationKey);
+// ES START
+                _animation.Play(animationUid, GetThrustAnimation((animationUid, sprite), offset, spriteRotation), ThrustAnimationKey);
                 if (arcComponent.Fadeout)
                     _animation.Play(animationUid, GetFadeAnimation(sprite, 0.05f, 0.15f), FadeAnimationKey);
+// ES END
                 break;
             case WeaponArcAnimation.None:
                 var (mapPos, mapRot) = TransformSystem.GetWorldPositionRotation(userXform);
@@ -105,13 +101,13 @@ public sealed partial class MeleeWeaponSystem
         }
     }
 
-    private Animation GetSlashAnimation(Entity<SpriteComponent> sprite, Angle arc, Angle spriteRotation, float length, float offset)
+    private Animation GetSlashAnimation(Entity<SpriteComponent> sprite, Angle arc, Angle spriteRotation)
     {
         const float slashDelay = 0.05f;
         const float slashLength = 0.25f;
         const float length = slashLength + slashDelay;
-        var startRotation = sprite.Rotation + arc / 2;
-        var endRotation = sprite.Rotation - arc / 2;
+        var startRotation = sprite.Comp.Rotation + arc / 2;
+        var endRotation = sprite.Comp.Rotation - arc / 2;
         var startRotationOffset = startRotation.RotateVec(new Vector2(0f, -1f));
         var endRotationOffset = endRotation.RotateVec(new Vector2(0f, -1f));
         startRotation += spriteRotation;
@@ -149,12 +145,14 @@ public sealed partial class MeleeWeaponSystem
         };
     }
 
-    private Animation GetThrustAnimation(Entity<SpriteComponent> sprite, float offset, Angle spriteRotation, float length)
+// ES START
+    private Animation GetThrustAnimation(Entity<SpriteComponent> sprite, float distance, Angle spriteRotation)
     {
         const float delay = 0.05f;
         const float length = 0.25f;
         var startOffset = sprite.Comp.Rotation.RotateVec(new Vector2(0f, -distance / 2f));
         var endOffset = sprite.Comp.Rotation.RotateVec(new Vector2(0f, -distance * 1.5f));
+// ES END
         _sprite.SetRotation(sprite.AsNullable(), sprite.Comp.Rotation + spriteRotation);
 
         return new Animation()

@@ -133,13 +133,6 @@ public sealed partial class MeleeWeaponComponent : Component
     [DataField]
     public float AnimationOffset = 1f;
 
-// ES START
-    // inverted every swing so that the next
-    // slash goes the other way (instead of from the same dir every time)
-    // clientside
-    public bool SwapNextSwing = false;
-// ES END
-
     // Sounds
 
     /// <summary>

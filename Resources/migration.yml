@@ -242,6 +242,11 @@ ChemDispenser: ESChemDispenser
 # 2026-1-12
 ESMachineScienceTelepad: null
 
+# 2026-1-20
+ESGasThruster: null
+ESEngineThrusterIon: null
+ESEngineThrusterGas: null
+
 # ES END
 
 # 2023-07-03
